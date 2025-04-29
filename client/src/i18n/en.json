@@ -1,5 +1,6 @@
 {
-    "welcome": "Welcome to itshop!",
-    "description": "This is an online store for tech lovers."
+  "nav": {
+    "home": "Home",
+    "cart": "Cart"
   }
-  
+}

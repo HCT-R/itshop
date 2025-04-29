@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "terser-brunch": "^4.1.0"
+  }
+}
