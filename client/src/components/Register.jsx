@@ -1,32 +1,58 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
-  const [message, setMessage] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
+    setError("");
+
     try {
-      const res = await axios.post("http://localhost:3001/api/auth/register", form);
-      setMessage(res.data.message || "Регистрация прошла успешно!");
+      const response = await axios.post("http://localhost:3001/api/auth/register", {
+        email,
+        password,
+      });
+
+      if (response.status === 201) {
+        navigate("/login");
+      }
     } catch (err) {
-      setMessage(err.response?.data?.message || "Ошибка регистрации.");
+      setError(err.response?.data?.message || "Ошибка регистрации");
     }
   };
 
   return (
-    <div className="max-w-md mx-auto mt-8 p-4 border rounded shadow">
+    <div className="max-w-md mx-auto mt-10 bg-white p-6 rounded shadow">
       <h2 className="text-xl font-bold mb-4">Регистрация</h2>
-      <form onSubmit={handleSubmit} className="space-y-2">
-        <input type="text" placeholder="Имя" required className="border p-2 w-full"
-          value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-        <input type="email" placeholder="Email" required className="border p-2 w-full"
-          value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-        <input type="password" placeholder="Пароль" required className="border p-2 w-full"
-          value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Зарегистрироваться</button>
-        {message && <p className="mt-2">{message}</p>}
+      {error && <p className="text-red-600 mb-2">{error}</p>}
+      <form onSubmit={handleRegister} className="space-y-4">
+        <input
+          type="email"
+          placeholder="Email"
+          className="w-full border p-2"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Пароль"
+          className="w-full border p-2"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+        >
+          Зарегистрироваться
+        </button>
       </form>
     </div>
   );

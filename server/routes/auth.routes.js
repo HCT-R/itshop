@@ -1,21 +1,33 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
 const router = express.Router();
 const User = require("../models/User");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-router.post("/register", async (req, res) => {
+// 🔐 Логин
+router.post("/login", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: "Пользователь уже существует" });
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "Пользователь не найден" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ name, email, password: hashedPassword });
-    await user.save();
-    res.status(201).json({ message: "Регистрация прошла успешно" });
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Неверный пароль" });
+    }
+
+    const token = jwt.sign(
+      { userId: user._id, email: user.email },
+      "jwt_secret_key",
+      { expiresIn: "1d" }
+    );
+
+    res.json({ token });
   } catch (err) {
+    console.error("Ошибка при логине:", err);
     res.status(500).json({ message: "Ошибка сервера" });
   }
 });

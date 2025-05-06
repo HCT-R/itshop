@@ -8,6 +8,10 @@ import CartPage from "./components/CartPage";
 import CheckoutPage from "./components/CheckoutPage";
 import AdminPanel from "./components/AdminPanel";
 import Login from "./components/Login";
+import Profile from "./components/Profile";
+import Register from "./components/Register";
+
+
 
 export default function App() {
   const { t } = useTranslation();
@@ -19,8 +23,8 @@ export default function App() {
         <nav className="bg-white shadow-md p-4 flex gap-4 justify-center">
           <Link to="/" className="text-blue-600 font-semibold hover:underline">{t("nav.home")}</Link>
           <Link to="/cart" className="text-blue-600 font-semibold hover:underline">{t("nav.cart")}</Link>
-          <Link to="/admin" className="text-blue-600 font-semibold hover:underline">Админка</Link>
           <Link to="/login" className="text-blue-600 font-semibold hover:underline">Вход</Link>
+          <Link to="/register" className="text-blue-600 font-semibold hover:underline">Регистрация</Link>
         </nav>
 
         <main className="flex-grow p-4">
@@ -30,6 +34,8 @@ export default function App() {
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/admin" element={<AdminPanel />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </main>
       </div>
