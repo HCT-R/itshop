@@ -16,7 +16,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white shadow-md p-4 flex justify-between items-center">
+    <header className="bg-white shadow-md p-4 flex justify-between items-center animate-fade-in">
       <h1 className="text-xl font-bold">itshop</h1>
       <div className="flex items-center gap-2">
         <button onClick={() => changeLang("kz")} className="mx-1">KZ</button>

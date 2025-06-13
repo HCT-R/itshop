@@ -15,8 +15,7 @@ router.get("/", async (req, res) => {
 // Добавить товар
 router.post("/", async (req, res) => {
   try {
-    const { name, description, price, image } = req.body;
-    const product = new Product({ name, description, price, image });
+    const product = new Product(req.body);
     await product.save();
     res.status(201).json(product);
   } catch (err) {
@@ -31,6 +30,32 @@ router.delete("/:id", async (req, res) => {
     res.json({ message: "Товар удалён" });
   } catch (err) {
     res.status(500).json({ message: "Ошибка при удалении" });
+  }
+});
+
+// Получение одного товара по id
+router.get("/:id", async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ message: "Товар не найден" });
+    }
+    res.json(product);
+  } catch (err) {
+    res.status(500).json({ message: "Ошибка при получении товара" });
+  }
+});
+
+// Обновление товара
+router.put("/:id", async (req, res) => {
+  try {
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!product) {
+      return res.status(404).json({ message: "Товар не найден" });
+    }
+    res.json(product);
+  } catch (err) {
+    res.status(500).json({ message: "Ошибка при обновлении товара" });
   }
 });
 

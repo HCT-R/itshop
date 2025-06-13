@@ -10,6 +10,9 @@ import AdminPanel from "./components/AdminPanel";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
 import Register from "./components/Register";
+import ProductPage from './components/ProductPage';
+import Footer from "./components/Footer";
+
 
 
 
@@ -36,8 +39,12 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/product/:id" element={<ProductPage />} />
+
+            
           </Routes>
         </main>
+        <Footer />
       </div>
     </Router>
   );
